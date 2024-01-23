@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,status,Response
 from typing import Optional
 from blogtype import BlogType
 
@@ -23,10 +23,11 @@ def blog_type(type: BlogType):
         "message":f"Blog type: {type.value}"
     }
 
-@app.get('/blog/{id}/commant/{commant_id}')
-def get_commant(id:int,commant_id:int,valid: bool = True, username:Optional[str] = None):
+
+@app.get('/blog/{id}/commant/{commant_id}/userid/{user_id}')
+def get_commant(id:int,commant_id:int,user_id:int,valid: bool = True, username:Optional[str] = None):
     return {
-        "message":f"your Id is {id}, and your comman ID is {commant_id} , is_valid: {valid}, username {username}"
+        "message":f"Your Id is {id}, and your comman ID is {commant_id} , is_valid: {valid}, username : {username} and your userId: {user_id}"
     }
 
 
@@ -37,11 +38,26 @@ def get_all_blogs(page=1,page_size: Optional[int]=None):
         "message":f"page: {page}, page_size: {page_size}"
     }
 
+
+
 @app.get('/blog/{id}')
-def blog(id:int):
+def blog(id:int,response:Response):
+    if id>20:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return{
+            "error":f"Blog id {id} not found"
+        }
+    response.status_code = status.HTTP_200_OK
     return {
-        "message":f"Your Blog id  id {id}"
+        "message":f"Your Blog id is {id}"
     }
+
+
+
+
+
+
+
 
 
 
