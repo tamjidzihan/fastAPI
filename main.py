@@ -1,4 +1,4 @@
-from fastapi import FastAPI,status,Response
+from fastapi import FastAPI,Response,status
 from typing import Optional
 from blogtype import BlogType
 
@@ -40,7 +40,7 @@ def get_all_blogs(page=1,page_size: Optional[int]=None):
 
 
 
-@app.get('/blog/{id}')
+@app.get('/blog/{id}',status_code=status.HTTP_200_OK)
 def blog(id:int,response:Response):
     if id>20:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -51,6 +51,7 @@ def blog(id:int,response:Response):
     return {
         "message":f"Your Blog id is {id}"
     }
+
 
 
 
