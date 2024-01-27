@@ -1,4 +1,5 @@
-from fastapi import APIRouter,Response,status
+from fastapi import APIRouter,Response,status,Depends
+from routers.blog_post import required_function
 from typing import Optional
 from blogtype import BlogType
 
@@ -6,6 +7,8 @@ router = APIRouter(
     prefix='/blog',
     tags=['blog']
     )
+
+
 
 # @router.get('/blog/all')
 # def get_all_blogs():
@@ -26,11 +29,7 @@ def blog_type(type: BlogType):
     }
 
 
-@router.get(
-        '/{id}/commant/{commant_id}/userid/{user_id}',
-        tags=['comment'],
-        summary='Retrive all comments',
-        )
+@router.get('/{id}/commant/{commant_id}/userid/{user_id}',tags=['comment'],summary='Retrive all comments')
 def get_commant(id:int,commant_id:int,user_id:int,valid: bool = True, username:Optional[str] = None):
     '''
     Simulate retrieving a comment of a blog
@@ -46,20 +45,15 @@ def get_commant(id:int,commant_id:int,user_id:int,valid: bool = True, username:O
 
 
 
-@router.get(
-        '/all'
-        )
-def get_all_blogs(page=1,page_size: Optional[int]=None):
+@router.get('/all')
+def get_all_blogs(page=1,page_size: Optional[int]=None,required_pram:dict = Depends(required_function)):
     return {
-        "message":f"page: {page}, page_size: {page_size}"
+        "message":f"page: {page}, page_size: {page_size}, required_parameter:{required_pram}"
     }
 
 
 
-@router.get(
-        '/{id}',
-         status_code=status.HTTP_200_OK
-         )
+@router.get('/{id}',status_code=status.HTTP_200_OK)
 def blog(id:int,response:Response):
     if id>20:
         response.status_code = status.HTTP_404_NOT_FOUND
