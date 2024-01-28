@@ -22,9 +22,6 @@ class BlogModel(BaseModel):
     image: Optional[ImageModel] = None
 
 
-def required_function():
-    return {'message':'Learing FastAPI is important'}
-
 
 
 @router.post('/new/{id}')

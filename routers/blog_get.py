@@ -1,5 +1,5 @@
 from fastapi import APIRouter,Response,status,Depends
-from routers.blog_post import required_function
+from blogtype import required_function
 from typing import Optional
 from blogtype import BlogType
 
