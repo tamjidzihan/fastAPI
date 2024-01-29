@@ -10,3 +10,12 @@ class Dbuser(Base):
     username = Column(String)
     email = Column(String,unique=True)
     password = Column(String)
+
+
+
+class Products(Base):
+    __tablename__ = 'products'
+    id = Column(Integer,primary_key=True,index=True)
+    title = Column(String)
+    price = Column(Integer)
+    quantity = Column(Integer)
