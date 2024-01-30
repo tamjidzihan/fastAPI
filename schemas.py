@@ -11,3 +11,5 @@ class DisplayUser(BaseModel):
     email : str
     class config():
         orm_mode = True
+
+

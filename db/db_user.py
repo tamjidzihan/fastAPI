@@ -21,3 +21,21 @@ def get_all_user(db:Session):
 
 def get_user(db:Session,id:int):
     return db.query(Dbuser).filter(Dbuser.id == id).first()
+
+
+def update_user(db:Session,id:int,request: UserBase):
+    query_user = db.query(Dbuser).filter(Dbuser.id == id)
+    query_user.update(
+        {
+            Dbuser.username : request.username,
+            Dbuser.email : request.email
+        }
+    )
+    db.commit()
+    return 'User Data updated'
+
+def delete_user(db:Session,id:int):
+    user = db.query(Dbuser).filter(Dbuser.id == id).first()
+    db.delete(user)
+    db.commit()
+    return 'user deleted'

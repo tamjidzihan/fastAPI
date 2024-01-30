@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,Response,status
 from fastapi.params import Depends,Body,Path
 from sqlalchemy.orm.session import Session
 from typing import List
@@ -24,14 +24,21 @@ def display_all_user(db:Session = Depends(get_db)):
     return db_user.get_all_user(db)
 
 # Reade one user
-@router.get('/{id}')
-def display_user(id:int,db:Session=Depends(get_db)):
-    return db_user.get_user(db,id)
-
-
-
+@router.get('/{id}',status_code=status.HTTP_200_OK,response_model=DisplayUser)
+def display_user(id:int,response:Response,db:Session=Depends(get_db)):
+    if db_user.get_user(db,id):
+        response.status_code = status.HTTP_200_OK
+        return db_user.get_user(db,id)    
+    else:
+        response.status_code = status.HTTP_200_OK
+        return {"error":"User Not found"}
+        
 # Update user
-
-
+@router.post('/{id}/update')
+def update_user_data(id:int,request:UserBase,db:Session = Depends(get_db)):
+    return db_user.update_user(db,id,request)
 
 # Delete user
+@router.get('/{id}/delete')
+def delete_user_data(id:int,db:Session = Depends(get_db)):
+    return db_user.delete_user(db,id)
