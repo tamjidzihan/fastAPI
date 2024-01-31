@@ -26,9 +26,17 @@ def display_all_article(db:Session=Depends(get_db)):
 
 
 # Read Article ID Wise
-
 @router.get('/{id}',response_model=DisplayArticle)
 def display_article_idwise(id:int,db:Session = Depends(get_db)):
     return db_article.get_article_idwise(db,id)
 
 
+# Update Article
+@router.post('/update/{id}')
+def update_article_data(id:int,request:ArticleBase,db:Session = Depends(get_db)):
+    return db_article.update_article(db,id,request)
+
+
+@router.get('/delete/{id}')
+def delete_article_data(id:int,db:Session = Depends(get_db)):
+    return db_article.delete_article(db,id)

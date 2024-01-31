@@ -26,8 +26,6 @@ class DbArticle(Base):
     user = relationship("Dbuser",back_populates='items')
 
 
-
-
 class DbProducts(Base):
     __tablename__ = 'products'
     id = Column(Integer,primary_key=True,index=True)

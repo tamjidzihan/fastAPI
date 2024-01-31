@@ -34,11 +34,11 @@ def display_user(id:int,response:Response,db:Session=Depends(get_db)):
         return {"error":"User Not found"}
         
 # Update user
-@router.post('/{id}/update')
+@router.post('/update/{id}')
 def update_user_data(id:int,request:UserBase,db:Session = Depends(get_db)):
     return db_user.update_user(db,id,request)
 
 # Delete user
-@router.get('/{id}/delete')
+@router.get('/delete/{id}')
 def delete_user_data(id:int,db:Session = Depends(get_db)):
     return db_user.delete_user(db,id)
