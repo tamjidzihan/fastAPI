@@ -1,7 +1,7 @@
-from fastapi import APIRouter,Response,status
+from fastapi import APIRouter,Response,status,Header
 from fastapi.params import Depends,Body,Path
 from sqlalchemy.orm.session import Session
-from typing import List
+from typing import List,Optional
 from schemas import UserBase,DisplayUser
 from db.database import get_db
 from db import db_user
@@ -10,6 +10,18 @@ router =  APIRouter(
     prefix='/user',
     tags=['user']
 )
+
+
+# Custom Header
+admin_user = ['admin','root','user']
+@router.get('/withheader')
+def get_user_name(
+    response:Response,
+    custom_header: Optional[List[str]] = Header(None)
+    ):
+    return admin_user
+
+
 
 # user CRUD operation:
 

@@ -25,7 +25,7 @@ def get_user(db:Session,id:int):
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'User id NO:{id} not foud'
+            detail=f'User id NO:{id} Do not exist'
             )
     return user
 
