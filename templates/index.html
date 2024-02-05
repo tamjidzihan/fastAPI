@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Data Display</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="row">
+            <h1 class="mb-4">Users and Items</h1>
+            <a class="btn btn-primary my-3" href="./signup.html">Create New User</a>
+        </div>
+
+        <div class="row" id="userData"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // Function to generate HTML for each user
+        function generateUserHTML(user) {
+            var userHTML = '<div class="col-md-6 mb-4">' +
+                '<div class="card">' +
+                '<div class="card-body">' +
+                '<h5 class="card-title">' + user.username + '</h5>' +
+                '<p class="card-text"><strong>Email:</strong> ' + user.email + '</p>';
+
+            if (user.items.length > 0) {
+                userHTML += '<h6 class="card-subtitle mt-3 mb-2 text-muted">Items:</h6>' +
+                    '<ul class="list-group">';
+
+                user.items.forEach(function (item) {
+                    userHTML += '<li class="list-group-item">' +
+                        '<strong>Title:</strong> ' + item.title + '<br>' +
+                        '<strong>Content:</strong> ' + item.content + '<br>' +
+                        '<strong>Published:</strong> ' + (item.published ? 'Yes' : 'No') +
+                        '</li>';
+                });
+
+                userHTML += '</ul>';
+            } else {
+                userHTML += '<p class="card-text">No items available.</p>';
+            }
+
+            userHTML += '</div>' +
+                '</div>' +
+                '</div>';
+
+            return userHTML;
+        }
+
+        // Fetch JSON data from the API
+        fetch('http://127.0.0.1:8000/user/')
+            .then(response => response.json())
+            .then(jsonData => {
+                // Display users on the page
+                var userDataElement = document.getElementById('userData');
+                jsonData.forEach(function (user) {
+                    userDataElement.innerHTML += generateUserHTML(user);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+
+</body>
+
+</html>
