@@ -6,6 +6,7 @@ from typing import List
 from schemas import ArticleBase,DisplayArticle
 from db.database import get_db
 from db import db_article
+from auth.auth import oauth2_scheme
 
 router = APIRouter(
     prefix='/article',
@@ -27,7 +28,7 @@ def display_all_article(db:Session=Depends(get_db)):
 
 # Read Article ID Wise
 @router.get('/{id}',response_model=DisplayArticle)
-def display_article_idwise(id:int,db:Session = Depends(get_db)):
+def display_article_idwise(id:int,db:Session = Depends(get_db),token:str = Depends(oauth2_scheme)):
     return db_article.get_article_idwise(db,id)
 
 
