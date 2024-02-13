@@ -6,7 +6,7 @@ from typing import List
 from schemas import ArticleBase,DisplayArticle,UserBase
 from db.database import get_db
 from db import db_article
-from auth.auth import oauth2_scheme,get_current_user
+from auth.auth import get_current_user
 
 router = APIRouter(
     prefix='/article',
