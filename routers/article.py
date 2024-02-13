@@ -26,7 +26,10 @@ def create_article_data(
 
 # Read All Article
 @router.get('/',response_model=List[DisplayArticle])
-def display_all_article(db:Session=Depends(get_db)):
+def display_all_article(
+    db:Session=Depends(get_db),
+    current_user: UserBase = Depends(get_current_user)
+    ):
     return db_article.get_all_article(db)
 
 
