@@ -56,4 +56,4 @@ def delete_user(db:Session,id:int):
     user = db.query(Dbuser).filter(Dbuser.id == id).first()
     db.delete(user)
     db.commit()
-    return f'user: {user.username} deleted '
+    return {"user": f"User: {user.username} deleted "}

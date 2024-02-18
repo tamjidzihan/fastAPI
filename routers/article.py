@@ -26,7 +26,10 @@ def create_article_data(
 
 # Read All Article
 @router.get('/',response_model=List[DisplayArticle])
-def display_all_article(db:Session=Depends(get_db)):
+def display_all_article(
+    db:Session=Depends(get_db),
+    current_user: UserBase = Depends(get_current_user)
+    ):
     return db_article.get_all_article(db)
 
 
@@ -45,7 +48,7 @@ def display_article_idwise(
 def update_article_data(id:int,request:ArticleBase,db:Session = Depends(get_db)):
     return db_article.update_article(db,id,request)
 
-
+# Delete Article
 @router.get('/delete/{id}')
 def delete_article_data(id:int,db:Session = Depends(get_db)):
     return db_article.delete_article(db,id)
