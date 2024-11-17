@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Translate Text File</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEJbPH5P2M1O3fQbCkZm2p30zCk4Z7NwiBvsZ1ka8fd7xHTbOlCbo98uD46cc" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Upload a Text File</h2>
+
+        <!-- Form to upload file and select language -->
+        <form action="/file_upload/" method="post" enctype="multipart/form-data" id="uploadForm">
+            <div class="mb-3">
+                <label for="fileUpload" class="form-label">Choose a text file</label>
+                <input type="file" class="form-control" name="uploaded_file" id="fileUpload" accept=".txt" required>
+            </div>
+            <div class="mb-3">
+                <label for="language" class="form-label">Select Language to Translate</label>
+                <select class="form-control" name="target_language" id="language" required>
+                    <!-- Dynamic language options will be populated here -->
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload & Translate</button>
+            <button type="button" class="btn btn-secondary" id="resetButton">Clear</button>
+        </form>
+
+        {% if cleaned_content %}
+        <div class="mt-5">
+            <h3>Cleaned Content:</h3>
+            <pre class="bg-light p-3 border rounded" id="cleanedContent">{{ cleaned_content }}</pre>
+        </div>
+        {% endif %}
+
+        {% if translated_content %}
+        <div class="mt-5">
+            <h3>Translated Content:</h3>
+            <pre class="bg-light p-3 border rounded" id="translatedContent">{{ translated_content }}</pre>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz4fnFO9gyb7pPCd7pIuVgA2Li5jqqD5iJf02x4a5r8XbM3c3h0KGljcrzz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+        integrity="sha384-pzjw8f+ua7Kw1TIq0n2eWpFxPmD7I1jA4uDJmc2t3F1lFf5jI13lk+5x0y2Ib0v8"
+        crossorigin="anonymous"></script>
+
+    <!-- JavaScript to populate language options dynamically and handle the reset button -->
+    <script>
+        // Fetch the available languages from the FastAPI /languages endpoint
+        fetch('/languages')
+            .then(response => response.json())
+            .then(data => {
+                const languageSelect = document.getElementById('language');
+                for (const [code, language] of Object.entries(data)) {
+                    const option = document.createElement('option');
+                    option.value = code;
+                    option.textContent = language;
+                    languageSelect.appendChild(option);
+                }
+            });
+
+        // Get the reset button and form
+        const resetButton = document.getElementById('resetButton');
+        const uploadForm = document.getElementById('uploadForm');
+        const cleanedContent = document.getElementById('cleanedContent');
+        const translatedContent = document.getElementById('translatedContent');
+
+        // Function to clear the form and the content
+        resetButton.addEventListener('click', function () {
+            uploadForm.reset();  // Reset the form inputs
+            if (cleanedContent) {
+                cleanedContent.innerHTML = '';  // Clear cleaned content
+            }
+            if (translatedContent) {
+                translatedContent.innerHTML = '';  // Clear translated content
+            }
+        });
+    </script>
+</body>
+
+</html>

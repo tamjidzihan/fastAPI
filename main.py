@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import blog_get,blog_post,user,article
+from routers import blog_get,blog_post,user,article,authentication
 from db import models
 from db.database import engine
-from auth import authentication
 
 models.Base.metadata.create_all(engine)
 
@@ -31,5 +30,4 @@ app.add_middleware(
     allow_credentials = True,
     allow_methods = ["*"],
     allow_headers = ["*"],
-
 )

@@ -14,6 +14,7 @@ class Article(BaseModel):
     published : bool
     class config():
         orm_mode = True
+        
 class DisplayUser(BaseModel):
     username : str
     email : str
@@ -36,6 +37,8 @@ class User(BaseModel):
     username : str
     class config():
         orm_mode = True
+
+
 class DisplayArticle(BaseModel):
     id : int
     title : str
